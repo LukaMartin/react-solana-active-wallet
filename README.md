@@ -12,7 +12,7 @@ npm install react-solana-active-wallet
 ### Usage
 
 ```tsx
-import { useSolanaActiveWallet } from "react-solana-active-wallet";
+import useSolanaActiveWallet from "react-solana-active-wallet";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 const { publicKey } = useWallet();
