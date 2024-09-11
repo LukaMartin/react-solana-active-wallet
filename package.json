@@ -1,6 +1,6 @@
 {
   "name": "react-solana-active-wallet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Npm package for detecting a user's active solana wallet",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
