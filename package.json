@@ -1,5 +1,5 @@
 {
-  "name": "react-solana-active-wallet",
+  "name": "solana-active-wallet-react",
   "version": "1.0.1",
   "description": "Npm package for detecting a user's active solana wallet",
   "main": "dist/index.js",

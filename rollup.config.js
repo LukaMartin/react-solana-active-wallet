@@ -25,7 +25,6 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
       resolve(),
-      terser(),
       json(),
     ],
     external: ["react", "react-dom"],
