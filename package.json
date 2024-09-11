@@ -1,7 +1,6 @@
 {
   "name": "react-solana-active-wallet",
-  "version": "1.0.7",
-  "type": "module",
+  "version": "1.0.0",
   "description": "Npm package for detecting a user's active solana wallet",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -18,6 +17,10 @@
   ],
   "author": "Luka Martin",
   "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
@@ -25,8 +28,6 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^18.3.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "tslib": "^2.7.0",
@@ -36,5 +37,8 @@
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/web3.js": "^1.95.3"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
