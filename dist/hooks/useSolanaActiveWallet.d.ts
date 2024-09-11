@@ -31,7 +31,7 @@ interface BackpackWallet {
     publicKey: PublicKey;
     on: (event: string, callback: () => void) => void;
 }
-export default function useSolanaActiveWallet(): {
+export default function useSolanaActiveWallet(publicKey: PublicKey | null): {
     activePublicKey: PublicKey | null;
     phantomProvider: PhantomWallet | undefined;
     backpackProvider: BackpackWallet | undefined;

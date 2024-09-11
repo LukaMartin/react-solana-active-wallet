@@ -1,6 +1,6 @@
 'use strict';
 
-var React = require('react');
+var react = require('react');
 var require$$0$1 = require('buffer');
 require('rpc-websockets');
 
@@ -13685,69 +13685,8 @@ seq(struct([nu64('epoch'), publicKey('authorizedVoter')]), offset(u32(), -8), 'a
 // epochCredits.length
 seq(struct([nu64('epoch'), nu64('credits'), nu64('prevCredits')]), offset(u32(), -8), 'epochCredits'), struct([nu64('slot'), nu64('timestamp')], 'lastTimestamp')]);
 
-const EMPTY_ARRAY = [];
-const DEFAULT_CONTEXT = {
-    autoConnect: false,
-    connecting: false,
-    connected: false,
-    disconnecting: false,
-    select() {
-        logMissingProviderError('call', 'select');
-    },
-    connect() {
-        return Promise.reject(logMissingProviderError('call', 'connect'));
-    },
-    disconnect() {
-        return Promise.reject(logMissingProviderError('call', 'disconnect'));
-    },
-    sendTransaction() {
-        return Promise.reject(logMissingProviderError('call', 'sendTransaction'));
-    },
-    signTransaction() {
-        return Promise.reject(logMissingProviderError('call', 'signTransaction'));
-    },
-    signAllTransactions() {
-        return Promise.reject(logMissingProviderError('call', 'signAllTransactions'));
-    },
-    signMessage() {
-        return Promise.reject(logMissingProviderError('call', 'signMessage'));
-    },
-    signIn() {
-        return Promise.reject(logMissingProviderError('call', 'signIn'));
-    },
-};
-Object.defineProperty(DEFAULT_CONTEXT, 'wallets', {
-    get() {
-        logMissingProviderError('read', 'wallets');
-        return EMPTY_ARRAY;
-    },
-});
-Object.defineProperty(DEFAULT_CONTEXT, 'wallet', {
-    get() {
-        logMissingProviderError('read', 'wallet');
-        return null;
-    },
-});
-Object.defineProperty(DEFAULT_CONTEXT, 'publicKey', {
-    get() {
-        logMissingProviderError('read', 'publicKey');
-        return null;
-    },
-});
-function logMissingProviderError(action, property) {
-    const error = new Error(`You have tried to ${action} "${property}" on a WalletContext without providing one. ` +
-        'Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.');
-    console.error(error);
-    return error;
-}
-const WalletContext = React.createContext(DEFAULT_CONTEXT);
-function useWallet() {
-    return React.useContext(WalletContext);
-}
-
-function useSolanaActiveWallet() {
-    var publicKey = useWallet().publicKey;
-    var _a = React.useState(publicKey), activePublicKey = _a[0], setActivePublicKey = _a[1];
+function useSolanaActiveWallet(publicKey) {
+    var _a = react.useState(publicKey), activePublicKey = _a[0], setActivePublicKey = _a[1];
     var getPhantomProvider = function () {
         if (window && "solana" in window) {
             var provider = window.solana;
@@ -13766,7 +13705,7 @@ function useSolanaActiveWallet() {
     };
     var phantomProvider = getPhantomProvider();
     var backpackProvider = getBackpackProvider();
-    React.useEffect(function () {
+    react.useEffect(function () {
         // Set public key on wallet connect
         phantomProvider === null || phantomProvider === void 0 ? void 0 : phantomProvider.on("connect", function (publicKey) {
             setActivePublicKey(publicKey);
@@ -13789,7 +13728,7 @@ function useSolanaActiveWallet() {
             }
         });
     }, [phantomProvider]);
-    React.useEffect(function () {
+    react.useEffect(function () {
         backpackProvider === null || backpackProvider === void 0 ? void 0 : backpackProvider.on("connect", function () {
             // Assign public key to a variable on connect
             var newPublicKey = backpackProvider.publicKey;
@@ -13801,7 +13740,7 @@ function useSolanaActiveWallet() {
             setActivePublicKey(null);
         });
     }, [backpackProvider]);
-    React.useEffect(function () {
+    react.useEffect(function () {
         if (!activePublicKey) {
             setActivePublicKey(publicKey);
         }

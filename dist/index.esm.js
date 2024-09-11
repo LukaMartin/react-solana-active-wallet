@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import require$$0$1, { Buffer as Buffer$1 } from 'buffer';
 import 'rpc-websockets';
 
@@ -13683,68 +13683,7 @@ seq(struct([nu64('epoch'), publicKey('authorizedVoter')]), offset(u32(), -8), 'a
 // epochCredits.length
 seq(struct([nu64('epoch'), nu64('credits'), nu64('prevCredits')]), offset(u32(), -8), 'epochCredits'), struct([nu64('slot'), nu64('timestamp')], 'lastTimestamp')]);
 
-const EMPTY_ARRAY = [];
-const DEFAULT_CONTEXT = {
-    autoConnect: false,
-    connecting: false,
-    connected: false,
-    disconnecting: false,
-    select() {
-        logMissingProviderError('call', 'select');
-    },
-    connect() {
-        return Promise.reject(logMissingProviderError('call', 'connect'));
-    },
-    disconnect() {
-        return Promise.reject(logMissingProviderError('call', 'disconnect'));
-    },
-    sendTransaction() {
-        return Promise.reject(logMissingProviderError('call', 'sendTransaction'));
-    },
-    signTransaction() {
-        return Promise.reject(logMissingProviderError('call', 'signTransaction'));
-    },
-    signAllTransactions() {
-        return Promise.reject(logMissingProviderError('call', 'signAllTransactions'));
-    },
-    signMessage() {
-        return Promise.reject(logMissingProviderError('call', 'signMessage'));
-    },
-    signIn() {
-        return Promise.reject(logMissingProviderError('call', 'signIn'));
-    },
-};
-Object.defineProperty(DEFAULT_CONTEXT, 'wallets', {
-    get() {
-        logMissingProviderError('read', 'wallets');
-        return EMPTY_ARRAY;
-    },
-});
-Object.defineProperty(DEFAULT_CONTEXT, 'wallet', {
-    get() {
-        logMissingProviderError('read', 'wallet');
-        return null;
-    },
-});
-Object.defineProperty(DEFAULT_CONTEXT, 'publicKey', {
-    get() {
-        logMissingProviderError('read', 'publicKey');
-        return null;
-    },
-});
-function logMissingProviderError(action, property) {
-    const error = new Error(`You have tried to ${action} "${property}" on a WalletContext without providing one. ` +
-        'Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.');
-    console.error(error);
-    return error;
-}
-const WalletContext = createContext(DEFAULT_CONTEXT);
-function useWallet() {
-    return useContext(WalletContext);
-}
-
-function useSolanaActiveWallet() {
-    var publicKey = useWallet().publicKey;
+function useSolanaActiveWallet(publicKey) {
     var _a = useState(publicKey), activePublicKey = _a[0], setActivePublicKey = _a[1];
     var getPhantomProvider = function () {
         if (window && "solana" in window) {

@@ -8,7 +8,6 @@ import type {
   VersionedTransaction,
 } from "@solana/web3.js";
 import { PublicKey } from "@solana/web3.js";
-import { useWallet } from "@solana/wallet-adapter-react";
 
 interface PhantomWalletEvents {
   connect(...args: unknown[]): unknown;
@@ -55,8 +54,7 @@ interface BackpackWindow extends Window {
   backpack?: BackpackWallet;
 }
 
-export default function useSolanaActiveWallet() {
-  const { publicKey } = useWallet();
+export default function useSolanaActiveWallet(publicKey: PublicKey | null) {
   const [activePublicKey, setActivePublicKey] = useState<PublicKey | null>(
     publicKey
   );
