@@ -3,7 +3,7 @@
 This is a react hook that detects a user's current active solana wallet on the client. It detects when a user has changed their active wallet inside a browser wallet extension.
 The wallets currently supported are:
 - Phantom
-- Backpack wallets. 
+- Backpack
 
 Support for other wallets will be added in the future.
 

@@ -3,7 +3,7 @@
   "version": "1.0.7",
   "description": "Npm package for detecting a user's active solana wallet",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
