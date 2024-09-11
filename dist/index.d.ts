@@ -20,7 +20,9 @@ interface PhantomWallet extends EventEmitter<PhantomWalletEvents> {
     signMessage(message: Uint8Array): Promise<{
         signature: Uint8Array;
     }>;
-    connect(): Promise<void>;
+    connect(): Promise<{
+        publicKey: PublicKey;
+    } | void>;
     disconnect(): Promise<void>;
 }
 interface BackpackWallet {
