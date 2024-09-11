@@ -30,7 +30,7 @@ interface PhantomWallet extends EventEmitter<PhantomWalletEvents> {
     options?: SendOptions
   ): Promise<{ signature: TransactionSignature }>;
   signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }>;
-  connect(): Promise<void>;
+  connect(): Promise<{ publicKey: PublicKey } | void>;
   disconnect(): Promise<void>;
 }
 
@@ -83,27 +83,26 @@ export default function useSolanaActiveWallet(publicKey: PublicKey | null) {
   const backpackProvider = getBackpackProvider();
 
   useEffect(() => {
-    // Set public key on wallet connect
-    phantomProvider?.on("connect", (publicKey) => {
-      setActivePublicKey(publicKey as PublicKey);
+    phantomProvider?.on("accountChanged", async (publicKey: PublicKey) => {
+      if (publicKey) {
+        // Set new public key and continue as usual
+        setActivePublicKey(publicKey);
+      } else {
+        try {
+          // connect new wallet and set new public key
+          const resp = await phantomProvider.connect();
+          if (resp && resp.publicKey) {
+            setActivePublicKey(resp.publicKey);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
     });
 
     // Clear users public key on disconnect
     phantomProvider?.on("disconnect", () => {
       setActivePublicKey(null);
-    });
-
-    phantomProvider?.on("accountChanged", (publicKey: PublicKey) => {
-      if (publicKey) {
-        // Set new public key and continue as usual
-        setActivePublicKey(publicKey);
-      } else {
-        // Attempt to reconnect to Phantom
-        phantomProvider.connect().catch((error: Error) => {
-          // Handle connection failure
-          console.error("Failed to reconnect to Phantom:", error);
-        });
-      }
     });
   }, [phantomProvider]);
 
