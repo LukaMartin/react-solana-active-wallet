@@ -54,11 +54,7 @@ interface BackpackWindow extends Window {
   backpack?: BackpackWallet;
 }
 
-type useSolanaActiveWalletProps = {
-  publicKey: PublicKey | null;
-};
-
-export default function useSolanaActiveWallet({ publicKey }: useSolanaActiveWalletProps) {
+export default function useSolanaActiveWallet(publicKey: PublicKey | null) {
   const [activePublicKey, setActivePublicKey] = useState<PublicKey | null>(
     publicKey
   );
