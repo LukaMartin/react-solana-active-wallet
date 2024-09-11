@@ -7,6 +7,8 @@ import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import json from "@rollup/plugin-json";
 
+const nodeBuiltins = ['fs', 'path', 'http', 'https', 'stream', 'url', 'util', 'buffer', 'zlib', 'punycode'];
+
 export default [
   {
     input: "src/index.ts",
@@ -20,14 +22,21 @@ export default [
         format: "esm",
       },
     ],
+    external: [
+      ...nodeBuiltins,
+      'react',
+      'rpc-websockets',
+      // Add any other external dependencies here
+    ],
     plugins: [
       peerDepsExternal(),
+      resolve({
+        preferBuiltins: false,
+        browser: true
+      }),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
-      resolve(),
-      json(),
     ],
-    external: ["react", "react-dom"],
   },
   {
     input: "src/index.ts",
