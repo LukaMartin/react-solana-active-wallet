@@ -5,6 +5,12 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "sideEffects": false,
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "@solana/wallet-adapter-react": "^0.15.35"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "rollup": "rollup -c --bundleConfigAsCjs"
