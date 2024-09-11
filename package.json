@@ -1,0 +1,17 @@
+{
+  "name": "react-solana-active-wallet",
+  "version": "1.0.0",
+  "description": "Npm package for detecting a user's active solana wallet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "solana",
+    "wallet",
+    "active"
+  ],
+  "author": "Luka Martin",
+  "license": "MIT"
+}
