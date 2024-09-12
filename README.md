@@ -9,6 +9,10 @@ Support for other wallets will be added in the future.
 
 ### Note the hook relies on the "publicKey" returned by the useWallet hook from @solana/wallet-adapter-react to get its initial value
 
+### Demo
+
+[Demo](https://solana-active-wallet-react-demo.vercel.app/)
+
 ### Installation
 
 ```bash
