@@ -1,91 +1,9 @@
 import { useEffect, useState } from "react";
-import type {
-  EventEmitter,
-  Adapter,
-  WalletReadyState,
-} from "@solana/wallet-adapter-base";
-import type {
-  Connection,
-  SendOptions,
-  Transaction,
-  TransactionSignature,
-  VersionedTransaction,
-} from "@solana/web3.js";
 import { PublicKey } from "@solana/web3.js";
-
-interface Wallet {
-  adapter: Adapter;
-  readyState: WalletReadyState;
-}
-
-interface PhantomWalletEvents {
-  connect(...args: unknown[]): unknown;
-  disconnect(...args: unknown[]): unknown;
-  accountChanged(newPublicKey: PublicKey): unknown;
-}
-
-interface PhantomWallet extends EventEmitter<PhantomWalletEvents> {
-  isPhantom?: boolean;
-  publicKey?: { toBytes(): Uint8Array };
-  isConnected: boolean;
-  signTransaction<T extends Transaction | VersionedTransaction>(
-    transaction: T
-  ): Promise<T>;
-  signAllTransactions<T extends Transaction | VersionedTransaction>(
-    transactions: T[]
-  ): Promise<T[]>;
-  signAndSendTransaction<T extends Transaction | VersionedTransaction>(
-    transaction: T,
-    options?: SendOptions
-  ): Promise<{ signature: TransactionSignature }>;
-  signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }>;
-  connect(): Promise<{ publicKey: PublicKey } | void>;
-  disconnect(): Promise<void>;
-}
-
-interface BackpackWallet {
-  connection: Connection;
-  isBackpack: boolean;
-  isConnected: boolean;
-  isXnft: boolean | undefined;
-  publicKey: PublicKey;
-  on: (event: string, callback: () => void) => void;
-  off: (event: string, callback: () => void) => void;
-}
-
-interface TrustWalletEvents {
-  connect(...args: unknown[]): unknown;
-  disconnect(...args: unknown[]): unknown;
-  accountChanged(publicKey: PublicKey): unknown;
-}
-
-interface TrustWallet extends EventEmitter<TrustWalletEvents> {
-  isTrust?: boolean;
-  publicKey?: { toBytes(): Uint8Array };
-  isTrustWallet: boolean;
-  signTransaction(transaction: Transaction): Promise<Transaction>;
-  signAllTransactions(transactions: Transaction[]): Promise<Transaction[]>;
-  signAndSendTransaction(
-    transaction: Transaction,
-    options?: SendOptions
-  ): Promise<{ signature: TransactionSignature }>;
-  signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }>;
-  connect(): Promise<void>;
-  disconnect(): Promise<void>;
-}
-
-interface PhantomWindow extends Window {
-  phantom?: {
-    solana?: PhantomWallet;
-  };
-  solana?: PhantomWallet;
-}
-
-interface TrustWindow extends Window {
-  trustwallet?: {
-    solana?: TrustWallet;
-  };
-}
+import { getPhantomProvider } from "../lib/getPhantomProvider";
+import { getBackpackProvider } from "../lib/getBackpackProvider";
+import { getTrustProvider } from "../lib/getTrustProvider";
+import { Wallet } from "../types/wallet";
 
 export default function useSolActiveWallet(
   publicKey: PublicKey | null,
@@ -97,36 +15,6 @@ export default function useSolActiveWallet(
       return storedPublicKey ? new PublicKey(storedPublicKey) : null;
     }
   );
-
-  const getPhantomProvider = () => {
-    if (window && "phantom" in window) {
-      const provider = window.phantom as PhantomWindow;
-
-      if (provider && provider.solana && provider.solana.isPhantom) {
-        return provider.solana as unknown as PhantomWallet;
-      }
-    }
-  };
-
-  const getBackpackProvider = () => {
-    if (window && "backpack" in window) {
-      const provider = window.backpack as BackpackWallet;
-
-      if (provider && provider.isBackpack) {
-        return provider;
-      }
-    }
-  };
-
-  const getTrustProvider = () => {
-    if (window && "trustwallet" in window) {
-      const provider = (window as TrustWindow).trustwallet;
-
-      if (provider?.solana?.isTrustWallet) {
-        return provider.solana;
-      }
-    }
-  };
 
   const phantomProvider = getPhantomProvider();
   const backpackProvider = getBackpackProvider();

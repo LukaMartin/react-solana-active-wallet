@@ -1,6 +1,6 @@
 ## Solana Active Wallet React
 
-This is a react hook that detects a user's current active solana wallet on the client. It detects when a user has changed their active wallet inside a browser wallet extension.
+This is a react hook that detects a user's current active solana wallet and returns the public key on the client. It detects when a user has changed their active wallet inside a browser wallet extension and will update and return the active public key accordingly.
 The wallets currently supported are:
 - Phantom
 - Backpack
@@ -28,5 +28,5 @@ import useSolanaActiveWallet from "solana-active-wallet-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 const { publicKey, wallet } = useWallet();
-const { activePublicKey, phantomProvider, backpackProvider } = useSolanaActiveWallet(publicKey, wallet);
+const { activePublicKey, phantomProvider, backpackProvider, trustProvider } = useSolanaActiveWallet(publicKey, wallet);
 ```
