@@ -5,10 +5,11 @@ The wallets currently supported are:
 - Phantom
 - Backpack
 - Solflare
+- TrustWallet
 
 Support for other wallets will be added in the future.
 
-### Note the hook relies on the "publicKey" and "wallet" returned by the useWallet hook from @solana/wallet-adapter-react to get its initial value
+### Note the hook relies on the "publicKey" and "wallet" returned by the useWallet hook from @solana/wallet-adapter-react.
 
 ### Demo Website
 
