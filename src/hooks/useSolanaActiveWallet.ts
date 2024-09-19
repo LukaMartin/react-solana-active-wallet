@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import type { EventEmitter } from "@solana/wallet-adapter-base";
+import type {
+  EventEmitter,
+  Adapter,
+  WalletReadyState,
+} from "@solana/wallet-adapter-base";
 import type {
   Connection,
   SendOptions,
@@ -8,6 +12,11 @@ import type {
   VersionedTransaction,
 } from "@solana/web3.js";
 import { PublicKey } from "@solana/web3.js";
+
+interface Wallet {
+  adapter: Adapter;
+  readyState: WalletReadyState;
+}
 
 interface PhantomWalletEvents {
   connect(...args: unknown[]): unknown;
@@ -54,17 +63,20 @@ interface BackpackWindow extends Window {
   backpack?: BackpackWallet;
 }
 
-export default function useSolanaActiveWallet(publicKey: PublicKey | null) {
+export default function useSolanaActiveWallet(
+  publicKey: PublicKey | null,
+  wallet: Wallet | null
+) {
   const [activePublicKey, setActivePublicKey] = useState<PublicKey | null>(
     publicKey
   );
 
   const getPhantomProvider = () => {
-    if (window && "solana" in window) {
-      const provider = window.solana as PhantomWindow;
+    if (window && "phantom" in window) {
+      const provider = window.phantom as PhantomWindow;
 
       if (provider) {
-        return provider as unknown as PhantomWallet;
+        return provider.solana as unknown as PhantomWallet;
       }
     }
   };
@@ -119,6 +131,21 @@ export default function useSolanaActiveWallet(publicKey: PublicKey | null) {
       setActivePublicKey(null);
     });
   }, [backpackProvider]);
+
+  useEffect(() => {
+    // Add event listeners for Solflare wallet
+    if (wallet?.adapter.name === "Solflare") {
+      wallet?.adapter.on("connect", () => {
+        setActivePublicKey(publicKey);
+      });
+
+      wallet?.adapter.on("disconnect", () => {
+        setActivePublicKey(null);
+      });
+      // Set public key when user switches active wallet inside Solflare extension
+      setActivePublicKey(publicKey);
+    }
+  }, [wallet, publicKey]);
 
   useEffect(() => {
     if (!activePublicKey) {

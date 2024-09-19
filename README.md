@@ -4,12 +4,13 @@ This is a react hook that detects a user's current active solana wallet on the c
 The wallets currently supported are:
 - Phantom
 - Backpack
+- Solflare
 
 Support for other wallets will be added in the future.
 
-### Note the hook relies on the "publicKey" returned by the useWallet hook from @solana/wallet-adapter-react to get its initial value
+### Note the hook relies on the "publicKey" and "wallet" returned by the useWallet hook from @solana/wallet-adapter-react to get its initial value
 
-### Demo
+### Demo Website
 
 [Demo](https://solana-active-wallet-react-demo.vercel.app/)
 
@@ -25,6 +26,6 @@ npm install solana-active-wallet-react
 import useSolanaActiveWallet from "solana-active-wallet-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-const { publicKey } = useWallet();
-const { activePublicKey, phantomProvider, backpackProvider } = useSolanaActiveWallet(publicKey);
+const { publicKey, wallet } = useWallet();
+const { activePublicKey, phantomProvider, backpackProvider } = useSolanaActiveWallet(publicKey, wallet);
 ```
