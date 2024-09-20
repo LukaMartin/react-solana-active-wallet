@@ -8,4 +8,6 @@ export const getBackpackProvider = () => {
       return provider;
     }
   }
+
+  return null;
 };

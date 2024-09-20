@@ -28,5 +28,13 @@ import useSolanaActiveWallet from "solana-active-wallet-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 const { publicKey, wallet } = useWallet();
-const { activePublicKey, phantomProvider, backpackProvider, trustProvider } = useSolanaActiveWallet(publicKey, wallet);
+const { activePublicKey } = useSolanaActiveWallet(publicKey, wallet);
+
+The values returned by the hook are:
+- activePublicKey: PublicKey | undefined - The public key of the currently active wallet
+- activeWalletAddress: string | undefined - The wallet address of the currently active wallet
+- slicedWalletAddress: string | null - The wallet address of the currently active wallet sliced for a shortened format  eg: 5KgT...gQdY
+- phantomProvider: PhantomWallet | null - The Phantom provider from the window.phantom object
+- backpackProvider: BackpackWallet | null - The Backpack provider from the window.backpack object
+- trustProvider: TrustWallet | null - The Trust provider from the window.trustwallet object
 ```

@@ -8,4 +8,6 @@ export const getTrustProvider = () => {
       return provider.solana;
     }
   }
+
+  return null;
 };

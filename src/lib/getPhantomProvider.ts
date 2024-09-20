@@ -8,4 +8,6 @@ export const getPhantomProvider = () => {
       return provider.solana as unknown as PhantomWallet;
     }
   }
+
+  return null;
 };

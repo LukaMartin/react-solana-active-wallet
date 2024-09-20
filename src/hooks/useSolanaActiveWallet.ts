@@ -4,6 +4,7 @@ import { getPhantomProvider } from "../lib/getPhantomProvider";
 import { getBackpackProvider } from "../lib/getBackpackProvider";
 import { getTrustProvider } from "../lib/getTrustProvider";
 import { Wallet } from "../types/wallet";
+import { sliceWalletAddress } from "../lib/sliceWalletAddress";
 
 export default function useSolActiveWallet(
   publicKey: PublicKey | null,
@@ -15,7 +16,8 @@ export default function useSolActiveWallet(
       return storedPublicKey ? new PublicKey(storedPublicKey) : null;
     }
   );
-
+  const activeWalletAddress = activePublicKey?.toBase58();
+  const slicedWalletAddress = sliceWalletAddress(activeWalletAddress);
   const phantomProvider = getPhantomProvider();
   const backpackProvider = getBackpackProvider();
   const trustProvider = getTrustProvider();
@@ -133,5 +135,12 @@ export default function useSolActiveWallet(
     }
   }, [publicKey, activePublicKey]);
 
-  return { activePublicKey, phantomProvider, backpackProvider, trustProvider };
+  return {
+    activePublicKey,
+    activeWalletAddress,
+    slicedWalletAddress,
+    phantomProvider,
+    backpackProvider,
+    trustProvider,
+  };
 }
