@@ -1,6 +1,7 @@
 ## Solana Active Wallet React
 
 `useSolanaActiveWallet()`
+
 This is a react hook that detects a user's current active solana wallet and returns the public key on the client. It detects when a user has changed their active wallet inside a browser wallet extension and will update and return the active public key accordingly.
 The wallets currently supported are:
 
@@ -43,7 +44,7 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 function ConnectButton() {
   const { publicKey, wallet, connected, disconnect } = useWallet();
-  const { slicedWalletAddress } = useActiveWallet(publicKey, wallet);
+  const { slicedWalletAddress } = useSolanaActiveWallet(publicKey, wallet);
   const { setVisible: setModalVisible } = useWalletModal();
 
   return (
@@ -60,14 +61,20 @@ function ConnectButton() {
 ### Returned Values
 
 - ```activePublicKey: PublicKey | undefined```  
+
 The public key of the currently active wallet
 - ```activeWalletAddress: string | undefined```
+
 The wallet address of the currently active wallet
 - ```slicedWalletAddress: string | null```
+
 The wallet address of the currently active wallet sliced for a shortened format eg: 5KgT...gQdY
 - ```phantomProvider: PhantomWallet | null```
+
 The Phantom wallet provider from the window.phantom.solana object
 - ```backpackProvider: BackpackWallet | null```
+
 The Backpack wallet provider from the window.backpack object
 - ```trustProvider: TrustWallet | null```
+
 The Trust wallet provider from the window.trustwallet.solana object
