@@ -1,4 +1,4 @@
-import { TrustWindow } from "../types/trust";
+import { TrustWindow } from "../../types/trust";
 
 export const getTrustProvider = () => {
   if (window && "trustwallet" in window) {

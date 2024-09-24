@@ -1,4 +1,4 @@
-import { PhantomWallet, PhantomWindow } from "../types/phantom";
+import { PhantomWallet, PhantomWindow } from "../../types/phantom";
 
 export const getPhantomProvider = () => {
   if (window && "phantom" in window) {

@@ -1,4 +1,4 @@
-import { BackpackWallet } from "../types/backpack";
+import { BackpackWallet } from "../../types/backpack";
 
 export const getBackpackProvider = () => {
   if (window && "backpack" in window) {
