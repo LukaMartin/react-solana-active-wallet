@@ -9,6 +9,7 @@ The wallets currently supported are:
 - Backpack
 - Solflare
 - TrustWallet
+- Glow
 
 Support for other wallets will be added in the future.
 
@@ -71,10 +72,3 @@ The wallet address of the currently active wallet
 The wallet address of the currently active wallet sliced for a shortened format eg: 5KgT...gQdY
 - ```phantomProvider: PhantomWallet | null```
 
-The Phantom wallet provider from the window.phantom.solana object
-- ```backpackProvider: BackpackWallet | null```
-
-The Backpack wallet provider from the window.backpack object
-- ```trustProvider: TrustWallet | null```
-
-The Trust wallet provider from the window.trustwallet.solana object

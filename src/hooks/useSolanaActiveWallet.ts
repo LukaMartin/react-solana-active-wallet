@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { PublicKey } from "@solana/web3.js";
-import { getPhantomProvider } from "../lib/getPhantomProvider";
-import { getBackpackProvider } from "../lib/getBackpackProvider";
-import { getTrustProvider } from "../lib/getTrustProvider";
 import { Wallet } from "../types/wallet";
 import { sliceWalletAddress } from "../lib/sliceWalletAddress";
+import useBackpackListener from "../wallets/hooks/useBackpackListener";
+import usePhantomListener from "../wallets/hooks/usePhantomListener";
+import useSolflareListener from "../wallets/hooks/useSolflareListener";
+import useTrustListener from "../wallets/hooks/useTrustListener";
+import useGlowListener from "../wallets/hooks/useGlowListener";
 
-export default function useSolActiveWallet(
+export default function useSolanaActiveWallet(
   publicKey: PublicKey | null,
   wallet: Wallet | null
 ) {
@@ -18,10 +20,7 @@ export default function useSolActiveWallet(
   );
   const activeWalletAddress = activePublicKey?.toBase58();
   const slicedWalletAddress = sliceWalletAddress(activeWalletAddress);
-  const phantomProvider = getPhantomProvider();
-  const backpackProvider = getBackpackProvider();
-  const trustProvider = getTrustProvider();
-
+  
   const updateActivePublicKey = (newPublicKey: PublicKey | null) => {
     setActivePublicKey(newPublicKey);
     if (newPublicKey) {
@@ -31,103 +30,11 @@ export default function useSolActiveWallet(
     }
   };
 
-  useEffect(() => {
-    const handleAccountChanged = async (publicKey: PublicKey) => {
-      if (publicKey) {
-        // Set new public key and continue as usual
-        updateActivePublicKey(publicKey);
-      } else {
-        try {
-          // connect new wallet and set new public key
-          if (phantomProvider) {
-            const resp = await phantomProvider.connect();
-            if (resp && resp.publicKey) {
-              updateActivePublicKey(resp.publicKey);
-            }
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    };
-    // Function to clear the public key when the wallet is disconnected
-    const handleDisconnect = () => {
-      updateActivePublicKey(null);
-    };
-
-    // Add event listeners for Phantom wallet
-    phantomProvider?.on("accountChanged", handleAccountChanged);
-    phantomProvider?.on("disconnect", handleDisconnect);
-
-    return () => {
-      // Remove event listeners when the component unmounts
-      phantomProvider?.off("accountChanged", handleAccountChanged);
-      phantomProvider?.off("disconnect", handleDisconnect);
-    };
-  }, [phantomProvider]);
-
-  useEffect(() => {
-    backpackProvider?.on("connect", () => {
-      // Assign public key to a variable on connect
-      const newPublicKey = backpackProvider.publicKey;
-      // Set new public key
-      updateActivePublicKey(newPublicKey ? new PublicKey(newPublicKey) : null);
-    });
-
-    backpackProvider?.on("disconnect", () => {
-      // Clear users public key on disconnect
-      updateActivePublicKey(null);
-    });
-
-    return () => {
-      // Remove event listeners when the component unmounts
-      backpackProvider?.off("connect", () => {});
-      backpackProvider?.off("disconnect", () => {});
-    };
-  }, [backpackProvider]);
-
-  useEffect(() => {
-    if (wallet?.adapter.name === "Solflare") {
-      // Function to set the public key when the wallet is connected
-      const handleConnect = () => updateActivePublicKey(publicKey);
-      // Function to clear the public key when the wallet is disconnected
-      const handleDisconnect = () => updateActivePublicKey(null);
-      // Add event listeners for Solflare wallet
-      wallet.adapter.on("connect", handleConnect);
-      wallet.adapter.on("disconnect", handleDisconnect);
-      updateActivePublicKey(publicKey);
-
-      return () => {
-        // Remove event listeners when the component unmounts
-        wallet.adapter.off("connect", handleConnect);
-        wallet.adapter.off("disconnect", handleDisconnect);
-      };
-    }
-  }, [wallet, publicKey]);
-
-  useEffect(() => {
-    // Function for account change event in Trust wallet
-    const handleAccountChanged = (publicKey: PublicKey) => {
-      if (publicKey) {
-        updateActivePublicKey(publicKey);
-      }
-    };
-    // Function to clear the public key when the wallet is disconnected
-    const handleDisconnect = () => {
-      setTimeout(() => {
-        updateActivePublicKey(null);
-      }, 500);
-    };
-    // Add event listeners for Trust wallet
-    trustProvider?.on("accountChanged", handleAccountChanged);
-    trustProvider?.on("disconnect", handleDisconnect);
-
-    return () => {
-      // Remove event listeners when the component unmounts
-      trustProvider?.off("accountChanged", handleAccountChanged);
-      trustProvider?.off("disconnect", handleDisconnect);
-    };
-  }, [trustProvider, publicKey]);
+  useBackpackListener(updateActivePublicKey);
+  usePhantomListener(updateActivePublicKey);
+  useSolflareListener(updateActivePublicKey, wallet);
+  useTrustListener(updateActivePublicKey);
+  useGlowListener(updateActivePublicKey, wallet);
 
   useEffect(() => {
     if (!activePublicKey) {
@@ -139,8 +46,5 @@ export default function useSolActiveWallet(
     activePublicKey,
     activeWalletAddress,
     slicedWalletAddress,
-    phantomProvider,
-    backpackProvider,
-    trustProvider,
   };
 }
