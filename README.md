@@ -39,7 +39,7 @@ console.log("active wallet address", activeWalletAddress);
 ### Example Usage
 
 ```tsx
-import useActiveWallet from "solana-active-wallet-react";
+import useSolanaActiveWallet from "solana-active-wallet-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
@@ -70,5 +70,4 @@ The wallet address of the currently active wallet
 - ```slicedWalletAddress: string | null```
 
 The wallet address of the currently active wallet sliced for a shortened format eg: 5KgT...gQdY
-- ```phantomProvider: PhantomWallet | null```
 
